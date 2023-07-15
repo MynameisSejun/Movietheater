@@ -1,6 +1,8 @@
 #include "Ticketing.h"
 #include <iostream>
 
+#define ADMIN_PASSWORD 1234
+
 enum {
 	SEARCH = 1,
 	RESERVATION,
@@ -25,7 +27,7 @@ Ticketing::~Ticketing()
 
 }
 void Ticketing::showTitle() {
-	cout << "================= 예매 시스템 ====================\n";
+	cout << "================= 예매 시스템 ===================\n";
 }
 void Ticketing::showMenu() {
 	cout << "=================================================\n";
@@ -56,27 +58,38 @@ void Ticketing::showAdminMenu() {
 
 void Ticketing::searchMovie() {
 	cout << "==== 영화검색\n";
-	cout << "===================================================\n";
+	cout << "=================================================\n";
 
 	list<Movie>::iterator it;
 	for (it = movieList.begin(); it != movieList.end(); it++) {
 		cout << "고유번호 : " << it->getId() << "\n" << "제목 : " << it->getName() << "\n" << "장르 : " << it->getGenre() << "\n";
 		cout << endl;
 	}
-	cout << "---------------------------------------------------\n";
+	cout << "-------------------------------------------------\n";
+}
+bool Ticketing::checkMovie(int id) {
+	list<Movie>::iterator it;
+	for (it = movieList.begin(); it != movieList.end(); it++) {
+		if (it->getId() == id) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void Ticketing::reserveMovie() {
 	int tempId;
 	int row, col;
+	list<Movie>::iterator it;
+
 	cout << "==== 영화예약\n";
 	searchMovie();
-	cout << "예약 할 영화 고유번호 : ";
+	cout << "예약 할 영화 고유번호 : "; // 예약 할 번호가 없으면 다시 입력 부탁
 	cin >> tempId;
+	checkMovie(tempId);
 	cout << "좌석번호(행^열) >> ";
 	cin >> row >> col;
 
-	list<Movie>::iterator it;
 	for (it = movieList.begin(); it != movieList.end(); ++it) {
 		if (it->getId() == tempId) {
 			Theater* theater = it->getTheater();
@@ -131,6 +144,7 @@ void Ticketing::reserveCancel() {
 
 	cout << "예약취소 할 영화 고유번호 : ";
 	cin >> tempId;
+	checkMovie(tempId);
 	reserveCheck(tempId);
 	cout << "좌석 선택(행^열) : ";
 	cin >> row >> col;
@@ -220,7 +234,7 @@ void Ticketing::changeAdmin() {
 	cout << "관리자 암호 입력 : ";
 	cin >> pw;
 
-	if (pw != 1234) {
+	if (pw != ADMIN_PASSWORD) {
 		cout << "패스워드가 일치하지 않습니다.\n";
 		initMenu();
 	}

@@ -12,7 +12,6 @@ Theater::Theater() {
 
 void Theater::setSeat(int v, int row, int col) {
 	seat[row][col] = v;
-	cout << seat[row][col] << endl;
 }
 
 int Theater::getSeat(int row, int col) {

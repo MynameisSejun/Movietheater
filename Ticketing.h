@@ -6,8 +6,6 @@
 #include <list>
 using namespace std;
 
-#define ADMIN_PASSWORD "1234"
-
 class Ticketing {
 	int genId = 1000;
 	list<Movie> movieList;
@@ -22,6 +20,7 @@ public:
 	void searchMovie();
 	void reserveMovie();
 	void reserveCheck(int);
+	bool checkMovie(int);
 	void reserveCancel();
 	void deleteMovie();
 	void changeAdmin();
